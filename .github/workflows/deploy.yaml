@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build - Docker Image
       run: |
-        docker build -t GITHUB_SHA .
+        docker build -t $GITHUB_SHA .
     - name: Push - Docker hub
       run: |
         docker login $DOCKER_REGISTRY_URL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
