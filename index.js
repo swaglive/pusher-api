@@ -1,5 +1,5 @@
-const Pusher = require('pusher-js');
-const PusherSDK = require('pusher');
+const PusherClient = require('pusher-js');
+const PusherServer = require('pusher');
 const { send } = require('micro');
 const url = require('url');
 const bunyan = require('bunyan');
@@ -20,11 +20,11 @@ const config = {
 };
 
 const logger = bunyan.createLogger(config.LOGGER);
-const pusher = new PusherSDK({
+const pusher = new PusherServer({
   ...config.PUSHER,
   useTLS: true,
 });
-const client = new Pusher(config.PUSHER.key, {
+const client = new PusherClient(config.PUSHER.key, {
   cluster: config.PUSHER.cluster,
   forceTLS: true,
   disableStats: true,
