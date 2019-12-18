@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  http:
+    build: .
+    command: micro -l tcp://0.0.0.0:3000 -l unix:/var/run/pusher.sock
+    env_file: .env
+    environment:
+      NODE_ENV: debug
+    volumes:
+    - .:/usr/src/app/
+    ports:
+    - "3000:3000"
