@@ -5,19 +5,27 @@ const url = require('url');
 const bunyan = require('bunyan');
 
 
-const logger = bunyan.createLogger({
-  name: 'pusher-channels-api',
-  level: process.env.NODE_ENV == 'debug' ? 'debug': 'info',
-});
+const config = {
+  PUSHER_USER_ID: process.env.PUSHER_USER_ID || 'SYSTEM',
+  PUSHER: {
+    appId: process.env.PUSHER_APP_ID,
+    key: process.env.PUSHER_APP_KEY,
+    secret: process.env.PUSHER_APP_SECRET,
+    cluster: process.env.PUSHER_APP_CLUSTER,
+  },
+  LOGGER: {
+    name: process.env.LOGGER_NAME || 'pusher-channels-api',
+    level: ['debug'].includes(process.env.NODE_ENV) ? 'debug': 'info',
+  },
+};
+
+const logger = bunyan.createLogger(config.LOGGER);
 const pusher = new PusherSDK({
-  appId: process.env.PUSHER_APP_ID,
-  key: process.env.PUSHER_APP_KEY,
-  secret: process.env.PUSHER_APP_SECRET,
-  cluster: process.env.PUSHER_APP_CLUSTER,
+  ...config.PUSHER,
   useTLS: true,
 });
-const client = new Pusher(process.env.PUSHER_APP_KEY, {
-  cluster: process.env.PUSHER_APP_CLUSTER,
+const client = new Pusher(config.PUSHER.key, {
+  cluster: config.PUSHER.cluster,
   forceTLS: true,
   disableStats: true,
   // enabledTransports: ['wss'],
