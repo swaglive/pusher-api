@@ -7,6 +7,8 @@ services:
     env_file: .env
     environment:
       NODE_ENV: debug
+      PUSHER_USER_ID: SYSTEM
+      PUSHER_KEEP_ALIVE_CHANNEL: presence-system@SYSTEM
     volumes:
     - .:/usr/src/app/
     ports:

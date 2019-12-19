@@ -6,6 +6,7 @@ const bunyan = require('bunyan');
 
 const config = {
   PUSHER_USER_ID: process.env.PUSHER_USER_ID || 'SYSTEM',
+  PUSHER_KEEP_ALIVE_CHANNEL: process.env.PUSHER_KEEP_ALIVE_CHANNEL,
   PUSHER: {
     appId: process.env.PUSHER_APP_ID,
     key: process.env.PUSHER_APP_KEY,
@@ -40,6 +41,8 @@ const client = new PusherClient(config.PUSHER.key, {
 });
 client.connection.bind('state_change', ( states ) => logger.info(states));
 client.connection.bind('error', ( err ) => logger.error(err));
+
+if (config.PUSHER_KEEP_ALIVE_CHANNEL) client.subscribe(config.PUSHER_KEEP_ALIVE_CHANNEL);
 
 
 module.exports = async (req, res) => {
