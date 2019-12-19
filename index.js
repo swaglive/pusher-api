@@ -1,7 +1,6 @@
 const PusherClient = require('pusher-js');
 const PusherServer = require('pusher');
 const { send, json } = require('micro');
-const url = require('url');
 const bunyan = require('bunyan');
 
 
