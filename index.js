@@ -33,7 +33,7 @@ const client = new PusherClient(config.PUSHER.key, {
       logger.debug({ socketId, channel: channel.name }, 'Authorizing channel');
 
       return next(null, pusher.authenticate(socketId, channel.name, {
-        user_id: 'SYSTEM',
+        user_id: config.PUSHER_USER_ID,
     	}));
     }};
   },
