@@ -1,6 +1,6 @@
 const PusherClient = require('pusher-js');
 const PusherServer = require('pusher');
-const { send } = require('micro');
+const { send, json } = require('micro');
 const url = require('url');
 const bunyan = require('bunyan');
 
@@ -44,16 +44,16 @@ client.connection.bind('error', ( err ) => logger.error(err));
 
 
 module.exports = async (req, res) => {
-  let { pathname } = url.parse(req.url);
+  let { channel } = await json(req);
 
-  if (!pathname.startsWith('/presence-')) return {};
-  let channelName = pathname.substring(1);
+  // Non-presence channels does not support member data
+  if (!channel.startsWith('presence-')) return {};
 
-  let channel = client.subscribe(channelName)
+  client.subscribe(channel)
     .bind('pusher:subscription_succeeded', ({ me, members }) => {
       delete members[me.id];
       logger.debug(members, 'Active members');
       send(res, 200, members);
-      client.unsubscribe(channelName);
+      client.unsubscribe(channel);
     });
 }
