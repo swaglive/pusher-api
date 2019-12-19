@@ -21,7 +21,7 @@ jobs:
       run: |
         docker build -t $GITHUB_REPOSITORY:$GITHUB_SHA .
     - name: Push - docker.io
-      if: ${{ startsWith(github.ref, 'refs/tags/') }}
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         docker tag $GITHUB_REPOSITORY:$GITHUB_SHA $DOCKER_REGISTRY_URL/$DOCKER_REPOSITORY_NAME
         docker tag $GITHUB_REPOSITORY:$GITHUB_SHA $DOCKER_REGISTRY_URL/$DOCKER_REPOSITORY_NAME:${DOCKER_TAG#refs/tags/}
