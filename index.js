@@ -15,7 +15,7 @@ const config = {
   },
   LOGGER: {
     name: process.env.LOGGER_NAME || 'pusher-channels-api',
-    level: ['debug'].includes(process.env.NODE_ENV) ? 'debug': 'info',
+    level: process.env.LOG_LEVEL || (['debug'].includes(process.env.NODE_ENV) ? 'debug': 'info'),
   },
 };
 
